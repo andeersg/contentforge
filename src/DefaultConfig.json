@@ -1,0 +1,13 @@
+{
+  "inputDir": ".",
+  "outputDir": "_site",
+  "sitename": "Static Site",
+  "collections": [
+    {
+      "name": "posts",
+      "folder": "_posts",
+      "permalink": ":year/:month/:filename"
+    }
+  ],
+  "permalink": ":path/:filename"
+}
