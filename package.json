@@ -1,0 +1,22 @@
+{
+  "name": "static2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "static2": "./cmd.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "front-matter": "^2.3.0",
+    "globby": "^8.0.1",
+    "handlebars": "^4.0.11",
+    "marked": "^0.3.19",
+    "minimist": "^1.2.0",
+    "moment": "^2.22.1"
+  }
+}
