@@ -1,112 +1,61 @@
-const fs = require('fs');
-const fm = require('front-matter');
-const Handlebars = require('handlebars');
-const { getFilenameAndExtenstion, loadFileContent, shouldJustMove } = require('./Helpers');
-const MarkdownHandler = require('./Types/Markdown');
-const StaticFileHandler = require('./Types/StaticFile');
-const HTMLFilesHandler = require('./Types/HTMLFiles');
+const fs = require('fs-extra');
 
 class Writer {
-  constructor(paths, config, output) {
-    this.paths = paths;
-    this.config = config;
+  constructor(root, output, config, dryRun = false) {
+    this.root = root;
     this.output = output;
-  
-    this.handlebars = Handlebars;
+    this.config = config;
 
-    this.prepareTemplates = this.prepareTemplates.bind(this);
-    this.prepareContent = this.prepareContent.bind(this);
-    this.isPartOfCollection = this.isPartOfCollection.bind(this);
+    this.dryRun = dryRun;
+
+    this.write = this.write.bind(this);
+    this.copyFiles = this.copyFiles.bind(this);
+    this.writeFiles = this.writeFiles.bind(this);
   }
 
-  write() {
+  write(data) {
     console.log('Starting writer');
-    this.templates = this.prepareTemplates();
 
-    this.data = this.prepareContent();
-  }
+    const cols = this.config.collections.map((col) => col.name);
+    let handlingPromises = [];
 
-  prepareTemplates() {
-    const tpls = {};
-    this.paths.templates.forEach(function(path) {
-      const fileContent = loadFileContent(path);
+    cols.forEach((col) => {
+      const colFiles = data[col].map(this.writeFiles);
       
-      const fileInfo = getFilenameAndExtenstion(path);
-
-      tpls[fileInfo.name] = fileContent;
+      handlingPromises = [...handlingPromises, ...colFiles];
     });
-    // @TODO Run them through handlebars here.
 
-    return tpls;
-  }
-
-  prepareContent() {
-    const data = {
-      site: {
-        files: [],
-        // Other global stuff.
-      }
-    };
+    const pageFiles = data.pages.map(this.writeFiles);
     
-    this.config.collections.forEach((col) => {
-      data.site[col.name] = [];
-    });
+    handlingPromises = [...handlingPromises, ...pageFiles];
 
-    console.log(this.paths.content);
+    const copyFiles = data.static_files.map(this.copyFiles);
 
-    this.paths.content.forEach((path) => {
-      // @TODO We need a direct copy check. Images, fonts and other stuff should be copied without reading.
-      if (shouldJustMove(path)) {
-        const fileInfo = getFilenameAndExtenstion(path);
-  
-        data.site.files.push({
-          name: fileInfo.name,
-          filename: fileInfo.base,
-          path: `${fileInfo.dir}/${fileInfo.base}`,
-        });
-      }
-      else {
-        const content = loadFileContent(path);
-        const collection = this.isPartOfCollection(path, this.config.collections);
+    handlingPromises = [...handlingPromises, ...copyFiles];
 
-        let parsedFile;
-
-        switch (content.ext) {
-          case 'md':
-            parsedFile = MarkdownHandler(content, collection); // @NOTE Maybe provide permalink structure, instead.
-            data.site[collection.name].push(parsedFile);
-            break;
-
-          case 'html':
-            parsedFile = HTMLFilesHandler(content, this.templates, this.handlebars);
-            break;
-
-          default:
-            parsedFile = StaticFileHandler(content);
-        }
-      }
-    });
-
-    // We need collection folders for identification.
-    // Go through all files, check for front-matter
-    // If front-matter is not found copy to same location.
-    // If front-matter is found, determine permalink and render.
-
-    // Have a module to prepare different kinds of content for output.
-    // console.log(JSON.stringify(data));
+    return fs.ensureDir(this.output)
+      .then(() => {
+        return Promise.all(handlingPromises);
+      })
+      .then(() => {
+        console.log('All written and copied');
+      })
+      .catch((e) => {
+        console.log('Error:');
+        console.log(e);
+      });
   }
 
-  isPartOfCollection(path, collections) {
-    let collection = false;
-    collections.forEach((co) => {
-      if (path.startsWith(co.folder)) {
-        collection = co;
-      }
-    });
-
-    return collection;
+  copyFiles(file) {
+    return fs.copy(`./${file}`, `./${this.output}/${file}`)
   }
 
+  writeFiles(file) {
+    return fs.ensureFile(`./${this.output}/${file.permalink}`)
+      .then(() => {
+        return fs.writeFile(`./${this.output}/${file.permalink}`, file.fileContent, 'utf8');
+      });
+  }
 };
 
 module.exports = Writer;
