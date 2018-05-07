@@ -4,7 +4,7 @@ const Config = require('./Config');
 const Analyzer = require('./Analyzer');
 const Render = require('./Render');
 
-function Static(input, output) { // Not sure about arguments yet.
+function ContentForge(input, output) { // Not sure about arguments yet.
   this.config = ''; // @TODO Function that merges default config with config file in project.
   this.isDebug = false;
   this.isDryRun = false;
@@ -15,15 +15,15 @@ function Static(input, output) { // Not sure about arguments yet.
   this.output = output || '_site';
 }
 
-Static.prototype.setDryRun = function() {
+ContentForge.prototype.setDryRun = function() {
   this.isDryRun = true;
 }
 
-Static.prototype.setDebug = function() {
+ContentForge.prototype.setDebug = function() {
   this.isDebug = true;
 }
 
-Static.prototype.init = async function() {
+ContentForge.prototype.init = async function() {
   // Call stuff, and build it.
   this.config = await Config(this.projectRoot);
 
@@ -34,10 +34,9 @@ Static.prototype.init = async function() {
   return true;
 }
 
-Static.prototype.getHelp = function() {
+ContentForge.prototype.getHelp = function() {
   let out = [];
-  out.push("usage: static2");
-  out.push("       static2 --watch");
+  out.push("usage: contentforge");
   out.push("");
   out.push("Arguments: ");
   out.push("  --version");
@@ -52,7 +51,7 @@ Static.prototype.getHelp = function() {
   return out.join("\n");
 };
 
-Static.prototype.write = function() {
+ContentForge.prototype.write = function() {
   // @TODO Add an eventemitter for updates.
   this.analyzer.analyze().then((res) => {
     console.log('Step 1 completed!');
@@ -74,4 +73,4 @@ Static.prototype.write = function() {
 }
 
 
-module.exports = Static;
+module.exports = ContentForge;

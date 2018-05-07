@@ -15,8 +15,12 @@ class ThemeEngine {
     this.resolvePermalink = this.resolvePermalink.bind(this);
 
     this.handlebars.registerHelper('json', function(context) {
-    return JSON.stringify(context);
-});
+      return JSON.stringify(context);
+    });
+
+    this.handlebars.registerHelper('date', function(context) {
+      return context.format('MMMM DD, Y');
+    });
   }
 
   setTemplate(name, template) {

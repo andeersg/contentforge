@@ -2,15 +2,15 @@
 
 const argv = require("minimist")(process.argv.slice(2));
 
-const Static2 = require('./src/Static.js');
+const ContentForge = require('./src/Content-Forge.js');
 
-const static2 = new Static2('.', '_site');
+const contentForge = new ContentForge('.', '_site');
 
-static2.init().then(function() {
+contentForge.init().then(function() {
   if (argv.help) {
-    console.log(static2.getHelp());
+    console.log(contentForge.getHelp());
   }
   else {
-    static2.write();
+    contentForge.write();
   }
 });
