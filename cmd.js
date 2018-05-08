@@ -2,15 +2,15 @@
 
 const argv = require("minimist")(process.argv.slice(2));
 
-const ContentForge = require('./src/Content-Forge.js');
+const Mifflin = require('./src/Mifflin.js');
 
-const contentForge = new ContentForge('.', '_site');
+const mifflin = new Mifflin('.', '_site');
 
-contentForge.init().then(function() {
+mifflin.init().then(function() {
   if (argv.help) {
-    console.log(contentForge.getHelp());
+    console.log(mifflin.getHelp());
   }
   else {
-    contentForge.write();
+    mifflin.write();
   }
 });

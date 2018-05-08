@@ -4,7 +4,7 @@ const Config = require('./Config');
 const Analyzer = require('./Analyzer');
 const Render = require('./Render');
 
-function ContentForge(input, output) { // Not sure about arguments yet.
+function Mifflin(input, output) { // Not sure about arguments yet.
   this.config = ''; // @TODO Function that merges default config with config file in project.
   this.isDebug = false;
   this.isDryRun = false;
@@ -15,15 +15,15 @@ function ContentForge(input, output) { // Not sure about arguments yet.
   this.output = output || '_site';
 }
 
-ContentForge.prototype.setDryRun = function() {
+Mifflin.prototype.setDryRun = function() {
   this.isDryRun = true;
 }
 
-ContentForge.prototype.setDebug = function() {
+Mifflin.prototype.setDebug = function() {
   this.isDebug = true;
 }
 
-ContentForge.prototype.init = async function() {
+Mifflin.prototype.init = async function() {
   // Call stuff, and build it.
   this.config = await Config(this.projectRoot);
 
@@ -34,9 +34,9 @@ ContentForge.prototype.init = async function() {
   return true;
 }
 
-ContentForge.prototype.getHelp = function() {
+Mifflin.prototype.getHelp = function() {
   let out = [];
-  out.push("usage: contentforge");
+  out.push("usage: mifflin");
   out.push("");
   out.push("Arguments: ");
   out.push("  --version");
@@ -51,7 +51,7 @@ ContentForge.prototype.getHelp = function() {
   return out.join("\n");
 };
 
-ContentForge.prototype.write = function() {
+Mifflin.prototype.write = function() {
   // @TODO Add an eventemitter for updates.
   this.analyzer.analyze().then((res) => {
     console.log('Step 1 completed!');
@@ -73,4 +73,4 @@ ContentForge.prototype.write = function() {
 }
 
 
-module.exports = ContentForge;
+module.exports = Mifflin;
