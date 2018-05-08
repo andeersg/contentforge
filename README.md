@@ -1,4 +1,4 @@
-# Content Forge
+# Mifflin
 A simple node.js static site generator inspired by Jekyll.
 
 ## Contributions?
