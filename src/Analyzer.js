@@ -15,6 +15,10 @@ class Analyzer {
 
     this.ignoredFiles = [
       '!config.json',
+      '!node_modules',
+      '!package.json',
+      '!package-lock.json',
+      '!yarn.lock',
       '!_site',
     ];
 
