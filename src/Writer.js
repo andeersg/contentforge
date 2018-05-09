@@ -14,8 +14,6 @@ class Writer {
   }
 
   write(data) {
-    console.log('Starting writer');
-
     const cols = this.config.collections.map((col) => col.name);
     let handlingPromises = [];
 
@@ -36,9 +34,6 @@ class Writer {
     return fs.ensureDir(this.output)
       .then(() => {
         return Promise.all(handlingPromises);
-      })
-      .then(() => {
-        console.log('All written and copied');
       })
       .catch((e) => {
         console.log('Error:');
