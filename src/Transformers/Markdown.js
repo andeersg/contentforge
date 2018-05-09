@@ -10,7 +10,7 @@ function parseMarkdown(content, pathInfo) {
     excerpt: '',
     published: '',
     permalink: false,
-    path: pathInfo.fullPath,
+    path: pathInfo.dir,
     filename: pathInfo.name.replace(/^([0-9]{4}-[0-9]{2}-[0-9]{2}-)/, ''),
     extension: 'html',
     variables: content.attributes,

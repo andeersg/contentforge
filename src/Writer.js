@@ -51,9 +51,14 @@ class Writer {
   }
 
   writeFiles(file) {
-    return fs.ensureFile(`./${this.output}/${file.permalink}`)
+    let permalink = file.permalink;
+    if (permalink.endsWith('/')) {
+      permalink += 'index.html';
+    }
+
+    return fs.ensureFile(`./${this.output}/${permalink}`)
       .then(() => {
-        return fs.writeFile(`./${this.output}/${file.permalink}`, file.fileContent, 'utf8');
+        return fs.writeFile(`./${this.output}/${permalink}`, file.fileContent, 'utf8');
       });
   }
 };

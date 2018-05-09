@@ -10,15 +10,15 @@
     "mifflin": "./cmd.js"
   },
   "author": {
-    "name" : "Anders Grendstadbakk",
-    "email" : "anders.2205@gmail.com"
+    "name": "Anders Grendstadbakk",
+    "email": "anders.2205@gmail.com"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/andeersg/mifflin.git"
+    "type": "git",
+    "url": "https://github.com/andeersg/mifflin.git"
   },
   "bugs": {
-    "url" : "https://github.com/andeersg/mifflin/issues"
+    "url": "https://github.com/andeersg/mifflin/issues"
   },
   "license": "ISC",
   "dependencies": {

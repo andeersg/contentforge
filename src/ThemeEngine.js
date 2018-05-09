@@ -1,4 +1,5 @@
 const resolvePermalink = require('./Permalink');
+const handlebarHelpers = require('./handlebarHelpers');
 
 class ThemeEngine {
   constructor(handlebars, data) {
@@ -14,13 +15,7 @@ class ThemeEngine {
     this.resolveLayout = this.resolveLayout.bind(this);
     this.resolvePermalink = this.resolvePermalink.bind(this);
 
-    this.handlebars.registerHelper('json', function(context) {
-      return JSON.stringify(context);
-    });
-
-    this.handlebars.registerHelper('date', function(context) {
-      return context.format('MMMM DD, Y');
-    });
+    handlebarHelpers(this.handlebars);
   }
 
   setTemplate(name, template) {
@@ -49,7 +44,9 @@ class ThemeEngine {
       renderData[col].forEach((colItem) => {
         const context = Object.assign({}, {site: renderData}, {page: colItem});
         const tpl = this.handlebars.compile(colItem.content);
-        
+
+        colItem.permalink = this.resolvePermalink(colItem, context);
+
         colItem.collection = col;
         colItem.rendered = tpl(context);
       });
@@ -57,8 +54,13 @@ class ThemeEngine {
 
     renderData.pages.forEach((colItem) => {
       const context = Object.assign({}, {site: renderData}, {page: colItem});
+
+      context.is_front = colItem.front;
+
       const tpl = this.handlebars.compile(colItem.content);
-      
+
+      colItem.permalink = this.resolvePermalink(colItem, context);
+
       colItem.rendered = tpl(context);
     });
 
@@ -74,7 +76,6 @@ class ThemeEngine {
         const layout = this.resolveLayout(colItem.variables.layout);
 
         colItem.fileContent = this.renderLayout(layout, context);
-        colItem.permalink = this.resolvePermalink(colItem, context);
       });
     });
     
@@ -83,7 +84,6 @@ class ThemeEngine {
       const layout = this.resolveLayout(colItem.variables.layout);
 
       colItem.fileContent = this.renderLayout(layout, context);
-      colItem.permalink = this.resolvePermalink(colItem, context);
     });
   }
   

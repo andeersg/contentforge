@@ -120,6 +120,26 @@ function shouldJustMove(filepath) {
   return move;
 }
 
+function sortPostsNewest(a, b) {
+  if (a.published.unix() < b.published.unix()) {
+    return 1;
+  }
+  if (a.published.unix() > b.published.unix()) {
+    return -1;
+  }
+  return 0;
+}
+
+function sortPostsOldest(a, b) {
+  if (a.published.unix() < b.published.unix()) {
+    return -1;
+  }
+  if (a.published.unix() > b.published.unix()) {
+    return 1;
+  }
+  return 0;
+}
+
 module.exports = {
   jsonReadFile: jsonReadFile,
   getPaths: getPaths,
@@ -127,4 +147,6 @@ module.exports = {
   getFilenameAndExtenstion: getFilenameAndExtenstion,
   loadFileContent: loadFileContent,
   shouldJustMove: shouldJustMove,
+  sortPostsNewest: sortPostsNewest,
+  sortPostsOldest: sortPostsOldest,
 };

@@ -12,11 +12,12 @@ function parseHtml(content, pathInfo) {
     excerpt: '',
     published: '',
     permalink: false,
-    path: pathInfo.fullPath,
+    path: pathInfo.dir,
     filename: pathInfo.name.replace(/^([0-9]{4}-[0-9]{2}-[0-9]{2}-)/, ''),
     extension: 'html',
     variables: content.attributes,
     collection: false,
+    front: (pathInfo.fullPath == 'index.html' ? true : false),
   };
 
   output.title = TitleHandler(content, pathInfo);

@@ -5,6 +5,7 @@ const path = require('path');
 const ThemeEngine = require('./ThemeEngine');
 const MarkdownTransformer = require('./Transformers/Markdown');
 const HtmlTransformer = require('./Transformers/HTML');
+const { sortPostsOldest } = require('./Helpers');
 
 /**
  * Here markdown is transformed, handlebars is compiled.
@@ -62,8 +63,12 @@ class Render {
       let collection = data.collections[col];
 
       collection.forEach((element) => {
-        renderData[col].push(this.processData(element));
+        const processedItem = this.processData(element);
+        processedItem.collection = col;
+        renderData[col].push(processedItem);
       });
+
+      renderData[col].sort(sortPostsOldest);
     }
   }
 

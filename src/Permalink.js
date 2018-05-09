@@ -1,10 +1,10 @@
 function GeneratePermalink(input, item) {
   if (item.permalink && !item.permalink.endsWith('.html')) {
-    return `${item.permalink}/index.html`;
+    return `${item.permalink}/`;
   }
 
   if (item.path == 'index.html') {
-    return 'index.html';
+    return '/';
   }
 
   let filename = false;
@@ -17,7 +17,7 @@ function GeneratePermalink(input, item) {
     .replace(':month', item.published.format('MM'))
     .replace(':day', item.published.format('DD'))
     .replace(':filename', item.filename)
-    .replace(':path', item.path) // @TODO must remove filename.
+    .replace(':path', item.path)
     .replace(':title', item.title.replace(/ /, '_').toLowerCase())
     .replace(':ext', item.extension);
 
@@ -25,7 +25,7 @@ function GeneratePermalink(input, item) {
     generated += `.${item.extension}`;
   }
   else {
-    generated += '/index.html';
+    generated += '/';
   }
 
   return generated;
