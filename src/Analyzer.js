@@ -13,14 +13,20 @@ class Analyzer {
     this.getCopyFiles = this.getCopyFiles.bind(this);
     this.getPages = this.getPages.bind(this);
 
-    this.ignoredFiles = [
+    this.globPaths = [
+      '!_*/**',
       '!config.json',
       '!node_modules',
       '!package.json',
       '!package-lock.json',
       '!yarn.lock',
-      '!_site',
+      '_templates', // @NOTE Templates could be ignored here and handled on their own.
     ];
+
+    // Collections are ignored, so they should be added specifically.
+    this.config.collections.forEach((col) => {
+      this.globPaths.push(col.folder);
+    });
 
     this.copyExtensions = [
       'jpg',
@@ -31,11 +37,12 @@ class Analyzer {
       'css',
       'woff',
       'woff2',
+      'ico',
     ];
   }
   
   setIgnores(ignores) {
-    this.ignoredFiles = ignores;
+    this.globPaths = ignores;
   }
   
   setCopyExtensions(extensions) {
@@ -44,14 +51,13 @@ class Analyzer {
 
   /**
    * Find all paths in project. Organize them.
-   *
-   * @TODO Sort paths based on collection, extension++
    */
   analyze() {
-    return globby(['**/*', ...this.ignoredFiles], {gitignore: true}).then((paths) => {
+    return globby(['**/*', ...this.globPaths], {gitignore: true}).then((paths) => {
       return paths;
     })
     .then((paths) => {
+      console.log(paths);
       this.paths = paths;
 
       // Get templates

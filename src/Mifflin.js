@@ -83,6 +83,9 @@ class Mifflin extends EventEmitter {
     .catch((e) => {
       console.log('Error:');
       console.log(e);
+      this.emit('fail', 'Command crashed');
+      // Kill process if anything crashes.
+      process.exit(0);
     });
   }
 }

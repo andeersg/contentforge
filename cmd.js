@@ -26,3 +26,6 @@ mifflin.on('step', (msg) => {
 mifflin.on('step_complete', (msg) => {
   spinner.succeed(msg);
 });
+mifflin.on('fail', (msg) => {
+  spinner.fail(msg);
+});
