@@ -50,8 +50,6 @@ class Render {
       const pathInfo = path.parse(template);
       const fmTemplate = this.readFrontMatterFile(template);
 
-      // fmTemplate.tpl = this.handlebars.compile(fmTemplate.body);
-
       this.themeEngine.setTemplate(pathInfo.name, fmTemplate);
     });
   }

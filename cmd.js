@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const ora = require('ora');
 
+const ora = require('ora');
 const argv = require("minimist")(process.argv.slice(2));
 
 const Mifflin = require('./src/Mifflin.js');
@@ -13,6 +13,12 @@ mifflin.init().then(function() {
   
   if (argv.help) {
     console.log(mifflin.getHelp());
+  }
+  else if (argv.serve) {
+    mifflin.serve();
+  }
+  else if (argv.watch) {
+    mifflin.watch();
   }
   else {
     spinner.start();
@@ -29,3 +35,5 @@ mifflin.on('step_complete', (msg) => {
 mifflin.on('fail', (msg) => {
   spinner.fail(msg);
 });
+
+// @TODO Make commands for build/watch/serve instead of options.

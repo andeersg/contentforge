@@ -48,14 +48,20 @@ class ThemeEngine {
         colItem.permalink = this.resolvePermalink(colItem, context);
 
         colItem.collection = col;
-        colItem.rendered = tpl(context);
+        try {
+          colItem.rendered = tpl(context);
+        }
+        catch (e) {
+          console.log(e);
+          console.log(colItem.title);
+        }
       });
     });
 
     renderData.pages.forEach((colItem) => {
       const context = Object.assign({}, {site: renderData}, {page: colItem});
 
-      context.is_front = colItem.front;
+      context.is_front = colItem.front; // @TODO Create a function or something for these.
 
       const tpl = this.handlebars.compile(colItem.content);
 
@@ -81,6 +87,7 @@ class ThemeEngine {
     
     renderData.pages.forEach((colItem) => {
       const context = Object.assign({}, {site: renderData}, {page: colItem}, {content: colItem.rendered});
+      context.is_front = colItem.front;
       const layout = this.resolveLayout(colItem.variables.layout);
 
       colItem.fileContent = this.renderLayout(layout, context);

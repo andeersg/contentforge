@@ -2,6 +2,7 @@ const moment = require('moment');
 const fs = require('fs');
 const TitleHandler = require('../TitleHandler');
 const parseDate = require('../PublishedDate');
+const generateExcerpt = require('../generateExcerpt');
 
 function parseHtml(content, pathInfo) {
   const fileInfo = fs.statSync(pathInfo.fullPath);
@@ -27,6 +28,9 @@ function parseHtml(content, pathInfo) {
 
   if (typeof content.attributes.excerpt !== 'undefined') {
     output.excerpt = content.attributes.excerpt;
+  }
+  else {
+    output.excerpt = generateExcerpt(output.content, 80);
   }
 
   if (typeof content.attributes.permalink !== 'undefined') {

@@ -12,8 +12,10 @@ class Analyzer {
     this.getCollectionPaths = this.getCollectionPaths.bind(this);
     this.getCopyFiles = this.getCopyFiles.bind(this);
     this.getPages = this.getPages.bind(this);
+    this.getGlobPaths = this.getGlobPaths.bind(this);
 
     this.globPaths = [
+      '**/*',
       '!_*/**',
       '!config.json',
       '!node_modules',
@@ -44,6 +46,10 @@ class Analyzer {
   setIgnores(ignores) {
     this.globPaths = ignores;
   }
+
+  getGlobPaths() {
+    return this.globPaths;
+  }
   
   setCopyExtensions(extensions) {
     this.copyExtensions = extensions;
@@ -53,11 +59,10 @@ class Analyzer {
    * Find all paths in project. Organize them.
    */
   analyze() {
-    return globby(['**/*', ...this.globPaths], {gitignore: true}).then((paths) => {
+    return globby(this.globPaths, {gitignore: true}).then((paths) => {
       return paths;
     })
     .then((paths) => {
-      console.log(paths);
       this.paths = paths;
 
       // Get templates

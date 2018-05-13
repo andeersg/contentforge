@@ -1,9 +1,12 @@
 const path = require('path');
 const { EventEmitter } = require('events');
+const browserSync = require('browser-sync');
 const Writer = require('./Writer');
 const Config = require('./Config');
 const Analyzer = require('./Analyzer');
 const Render = require('./Render');
+
+// @TODO Generate a cache file with the renderData.
 
 class Mifflin extends EventEmitter {
   constructor(input, output) {
@@ -23,6 +26,8 @@ class Mifflin extends EventEmitter {
     this.init = this.init.bind(this);
     this.getHelp = this.getHelp.bind(this);
     this.write = this.write.bind(this);
+    this.watch = this.watch.bind(this);
+    this.serve = this.serve.bind(this);
   }
 
   setDryRun() {
@@ -88,6 +93,53 @@ class Mifflin extends EventEmitter {
       process.exit(0);
     });
   }
+
+  watch() {
+    const watch = require('glob-watcher');
+    const globs = this.analyzer.getGlobPaths();
+
+    let watcher = watch(globs);
+
+    console.log('Start monitoring folders.');
+
+    watcher.on("change", function(path, stat) {
+      console.log("File changed:", path);
+    });
+    watcher.on("add", function(path, stat) {
+      console.log("File added:", path);
+    });
+  }
+  
+  async processChange(path) {
+    // @TODO handle changes to multiple files, like Eleventy.
+    // @TODO Call the regular build process.
+    // @TODO Call browesersync to reload or inject css.
+  }
+
+  serve(port) {
+    this.server = browserSync.create();
+
+    let serverConfig = {
+      baseDir: '_site'
+    };
+
+    this.server.init({
+      server: serverConfig,
+      port: port || 8080,
+      ignore: ["node_modules"],
+      watch: false,
+      open: false,
+      index: "index.html"
+    });
+
+    process.on(
+      "SIGINT",
+      function() {
+        this.server.exit();
+        process.exit();
+      }.bind(this)
+    );
+  };
 }
 
 module.exports = Mifflin;

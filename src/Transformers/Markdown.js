@@ -2,6 +2,7 @@ const moment = require('moment');
 const marked = require('marked');
 const TitleHandler = require('../TitleHandler');
 const parseDate = require('../PublishedDate');
+const generateExcerpt = require('../generateExcerpt');
 
 function parseMarkdown(content, pathInfo) {
   const output = {
@@ -26,21 +27,12 @@ function parseMarkdown(content, pathInfo) {
     output.excerpt = content.attributes.excerpt;
   }
   else {
-    // @TODO Create from markdown.
+    output.excerpt = generateExcerpt(output.content, 80);
   }
 
   if (typeof content.attributes.permalink !== 'undefined') {
     output.permalink = content.attributes.permalink;
   }
-
-  // @TODO Generate url based on front-matter or default config.
-  // if (collection) {
-  //   output.permalink = GeneratePermalink(collection.permalink, output);
-  // }
-  // 
-  // if (typeof input.attributes.permalink !== 'undefined') {
-  //   output.permalink = GeneratePermalink(content.attributes.permalink, output);
-  // }
 
   return output;
 }

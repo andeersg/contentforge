@@ -22,8 +22,8 @@ function registerHelpers(hb) {
    * number of posts.
    */
   hb.registerHelper('latest', function(context, options) {
-    var ret = "";
     const limit = parseInt(options.hash.limit) || 5;
+    let ret = "";
     let  i = 0;
     let  j = (limit < context.length) ? limit : context.length;
 
@@ -42,6 +42,32 @@ function registerHelpers(hb) {
   hb.registerHelper('date_now', function(context) {
     return moment().format(context);
   });
+
+  /**
+   * Groups content by year.
+   */
+  hb.registerHelper('group_by_year', function(context, options) {
+    const yearPosts = {};
+    let ret = "";
+
+    context.forEach((post) => {
+      if (typeof yearPosts[post.published.format('Y')] == 'undefined') {
+        yearPosts[post.published.format('Y')] = [];
+      }
+
+      yearPosts[post.published.format('Y')].push(post);
+    });
+
+    for(let i in yearPosts) {
+      ret += options.fn({
+        year: i,
+        posts: yearPosts[i],
+      });
+    }
+
+    return ret;
+  });
+
 }
 
 module.exports = registerHelpers;
