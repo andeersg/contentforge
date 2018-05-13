@@ -21,4 +21,14 @@ describe('generateExcerpt', function() {
   it('should return a stripped string with punctuation.', function() {
     assert.equal(generateExcerpt('<p>This is a sample intro.</p> <p>With more sentences.</p> <p>That is nice.</p>', 45), 'This is a sample intro. With more sentences.');
   });
+  
+  it('should use a default length if no length is given', function() {
+    const excerpt = generateExcerpt('This is a text with multiple sentences and lots of words to verify that we hit the default limit if no limit is provided');
+    assert.equal(excerpt.length, 80);
+  });
+  
+  it('should cut the sentence if no punctuation is inside the limit', function() {
+    const excerpt = generateExcerpt('This is a text with multiple sentences and lots of words to verify that we hit the default limit if no limit is provided.');
+    assert.equal(excerpt.length, 80);
+  });
 });

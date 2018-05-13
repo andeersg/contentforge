@@ -4,7 +4,11 @@ function generateExcerpt(input, length = 80) {
   let stripped = striptags(input);
 
   if (stripped.includes('.')) {
-    stripped =findSentencesInsideLimit(stripped, length);
+    const strippedDot = findSentencesInsideLimit(stripped, length);
+
+    if (strippedDot.length > 0) {
+      stripped = strippedDot;
+    }
   }
 
   if (stripped.length > length) {
