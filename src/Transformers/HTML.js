@@ -1,12 +1,9 @@
 const moment = require('moment');
-const fs = require('fs');
 const TitleHandler = require('../TitleHandler');
 const parseDate = require('../PublishedDate');
 const generateExcerpt = require('../generateExcerpt');
 
 function parseHtml(content, pathInfo) {
-  const fileInfo = fs.statSync(pathInfo.fullPath);
-
   const output = {
     title: '',
     content: '',
