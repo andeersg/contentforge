@@ -1,5 +1,5 @@
 {
-  "name": "mifflin",
+  "name": "raccoonpress",
   "version": "1.0.2",
   "description": "",
   "main": "index.js",
@@ -15,10 +15,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/andeersg/mifflin.git"
+    "url": "https://github.com/andeersg/raccoonpress.git"
   },
   "bugs": {
-    "url": "https://github.com/andeersg/mifflin/issues"
+    "url": "https://github.com/andeersg/raccoonpress/issues"
   },
   "license": "ISC",
   "dependencies": {
