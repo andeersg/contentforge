@@ -47,6 +47,7 @@ class Writer {
           title: this.content[postTitle].title,
           published: this.content[postTitle].published,
           description: 'Description to come',
+          permalink: this.content[postTitle].permalink,
         });
       });
     });
