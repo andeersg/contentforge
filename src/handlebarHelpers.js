@@ -58,12 +58,24 @@ function registerHelpers(hb) {
       yearPosts[post.published.format('Y')].push(post);
     });
 
-    for(let i in yearPosts) {
+    const sortedYears = Object.keys(yearPosts).sort();
+
+    sortedYears.forEach((year) => {
       ret += options.fn({
-        year: i,
-        posts: yearPosts[i],
+        year: year,
+        posts: yearPosts[year],
       });
-    }
+    });
+
+    // for(let i in yearPosts) {
+    //   ret += options.fn({
+    //     year: i,
+    //     posts: yearPosts[i],
+    //   });
+    // }
+
+    // @TODO Sort years.
+    
 
     return ret;
   });
