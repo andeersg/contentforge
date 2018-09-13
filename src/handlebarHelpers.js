@@ -58,7 +58,7 @@ function registerHelpers(hb) {
       yearPosts[post.published.format('Y')].push(post);
     });
 
-    const sortedYears = Object.keys(yearPosts).sort();
+    const sortedYears = Object.keys(yearPosts).sort().reverse();
 
     sortedYears.forEach((year) => {
       ret += options.fn({
