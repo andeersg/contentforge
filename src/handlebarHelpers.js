@@ -59,7 +59,7 @@ function registerHelpers(hb) {
     });
 
     const sortedYears = Object.keys(yearPosts).sort().reverse();
-
+    
     sortedYears.forEach((year) => {
       ret += options.fn({
         year: year,
@@ -67,19 +67,18 @@ function registerHelpers(hb) {
       });
     });
 
-    // for(let i in yearPosts) {
-    //   ret += options.fn({
-    //     year: i,
-    //     posts: yearPosts[i],
-    //   });
-    // }
-
-    // @TODO Sort years.
-    
-
     return ret;
   });
 
+
+  /**
+   * Hide parts from production.
+   * 
+   * For now it is not compiled at all. Could use env and compile in dev.
+   */
+  hb.registerHelper('beta', function(options) {
+    return new hb.SafeString('');
+  });
 }
 
 module.exports = registerHelpers;
