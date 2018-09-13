@@ -1,6 +1,7 @@
 const moment = require('moment');
 const handlebars = require('handlebars');
 const fs = require('fs-extra');
+const marked = require('marked');
 const handlebarHelpers = require('./handlebarHelpers');
 
 class Writer {
@@ -87,7 +88,11 @@ class Writer {
     pageVariables.page = item;
 
     // This is a function where we send in variables to render it.
-    const renderedContent = tpl(pageVariables);
+    let renderedContent = tpl(pageVariables);
+    if (item.extension === '.md') {
+      renderedContent = marked(renderedContent);
+    }
+
     let templateName = item.variables.layout;
 
     if (templateName == null) {
@@ -116,7 +121,13 @@ class Writer {
   }
 
   writeFile(content, path) {
-    fs.outputFileSync(`_site/${path}`, content);
+    let destPath = `_site/${path}`;
+
+    if (path.endsWith('/')) {
+      destPath += 'index.html';
+    }
+
+    fs.outputFileSync(destPath, content);
   }
 
 }

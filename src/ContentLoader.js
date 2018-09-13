@@ -55,6 +55,7 @@ class ContentLoader {
         fileCreated: moment(fileInfo.birthtimeMs),
         modified: moment(fileInfo.mtimeMs),
         filePath: file,
+        extension: pathInfo.ext,
       };
 
       // Read file and check for fm.
@@ -192,7 +193,7 @@ class ContentLoader {
     };
 
     if (typeof file.variables.permalink !== 'undefined') {
-      return `${file.variables.permalink}/index.html`;
+      return `${file.variables.permalink}/`;
     }
 
     let pattern = this.config.permalink;
@@ -216,8 +217,8 @@ class ContentLoader {
     // @NOTE Should we always add html suffix? rawTitle is filename without dates.
     permalink = permalink.replace(':filename', `${slugify(file.rawTitle, slugifySettings)}.html`);
 
-    // @NOTE The title token will become "title/index.html"
-    permalink = permalink.replace(':title', `${slugify(file.rawTitle, slugifySettings)}/index.html`);
+    // @NOTE The title token will become "title/"
+    permalink = permalink.replace(':title', `${slugify(file.rawTitle, slugifySettings)}/`);
 
     return permalink;
   }
