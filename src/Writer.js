@@ -88,7 +88,14 @@ class Writer {
     pageVariables.page = item;
 
     // This is a function where we send in variables to render it.
-    let renderedContent = tpl(pageVariables);
+    let renderedContent;
+    try {
+      renderedContent = tpl(pageVariables);
+    }
+    catch (e) {
+      console.log(item.filePath);
+      console.log(e);
+    }
     if (item.extension === '.md') {
       renderedContent = marked(renderedContent);
     }
@@ -109,6 +116,10 @@ class Writer {
   }
 
   renderInTemplate(content, pageVariables, layoutName) {
+    // @TODO Print prettier errors.
+    if (!this.tpl.tpl[layoutName]) {
+      throw 'Unknown template specified: ' + layoutName;
+    }
     const tpl = this.tpl.tpl[layoutName];
 
     if (typeof tpl.attributes.layout !== 'undefined') {

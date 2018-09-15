@@ -79,6 +79,16 @@ function registerHelpers(hb) {
   hb.registerHelper('beta', function(options) {
     return new hb.SafeString('');
   });
+
+  hb.registerHelper('outdated', function(published, years, options) {
+    const now = moment();
+    const duration = moment.duration(now.diff(published));
+
+    if (duration.get('year') > years) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 }
 
 module.exports = registerHelpers;

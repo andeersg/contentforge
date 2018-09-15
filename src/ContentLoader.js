@@ -82,6 +82,12 @@ class ContentLoader {
         return;
       }
 
+      // If content is marked as not published ignore it.
+      if (fm.attributes.hasOwnProperty('publish') && !fm.attributes.publish) {
+        delete this.content[pathInfo.name];
+        return;
+      }
+
       const fromFilename = this.parseFilename(pathInfo.name);
 
       if (fromFilename) {
@@ -193,7 +199,7 @@ class ContentLoader {
     };
 
     if (typeof file.variables.permalink !== 'undefined') {
-      return `${file.variables.permalink}/`;
+      return `${file.variables.permalink}/`.replace(/\/\//, '/');
     }
 
     let pattern = this.config.permalink;
@@ -202,11 +208,6 @@ class ContentLoader {
     }
 
     let permalink = this.replaceTimeTokens(pattern, file.published);
-
-    if (file.fileName.match(/about/)) {
-      console.log(file);
-      
-    }
 
     // @TODO This is probably a hotfix.
     if (!file.filePath.match('\/')) {
