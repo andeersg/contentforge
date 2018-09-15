@@ -42,7 +42,7 @@ const cli = meow(`
 });
 
 const command = cli.input[0] || 'help';
-const environment = process.env.ENV || 'development';
+const environment = process.env.NODE_ENV || 'development';
 const start = new Date().getTime();
 
 log(`${chalk.green('Raccn')} version ${chalk.yellow(cli.pkg.version)}\n`);
