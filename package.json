@@ -15,10 +15,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/andeersg/raccoonpress.git"
+    "url": "https://github.com/andeersg/raccn.git"
   },
   "bugs": {
-    "url": "https://github.com/andeersg/raccoonpress/issues"
+    "url": "https://github.com/andeersg/raccn/issues"
   },
   "license": "ISC",
   "dependencies": {
