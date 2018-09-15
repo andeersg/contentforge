@@ -27,6 +27,7 @@ class ContentLoader {
       'css',
       'js',
       'pdf',
+      'ico',
     ];
 
     this.ignoreExtensions = [
