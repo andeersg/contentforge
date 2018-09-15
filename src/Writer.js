@@ -70,9 +70,6 @@ class Writer {
       else if (item.action === 'render') {
         this.renderElement(item, vars, this.content);
       }
-
-      // const context = Object.assign({}, {site: renderData}, {page: colItem});
-      // const tpl = handlebars.compile(colItem.content);
     }
   }
 
