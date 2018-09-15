@@ -1,7 +1,24 @@
 const moment = require('moment');
+const globby = require('globby');
+const path = require('path');
+const fs = require('fs');
 const { sortPostsNewest } = require('./Helpers');
 
-function registerHelpers(hb) {
+function loadPartials(hb) {
+  const files = globby.sync('_includes/*');
+  files.forEach((file) => {
+    const pathInfo = path.parse(file);
+    const content = fs.readFileSync(file, 'utf8');
+
+    hb.registerPartial(pathInfo.name, content);
+  });
+}
+
+function registerHelpersAndPartials(hb) {
+  /**
+   * Load all files in "_includes" as partials.
+   */
+  loadPartials(hb);
 
   /**
    * Print object as JSON.
@@ -89,6 +106,20 @@ function registerHelpers(hb) {
     }
     return options.inverse(this);
   });
+
+  hb.registerHelper('ifCond', function(v1, v2, options) {
+    if(v1 === v2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
+
+  hb.registerHelper('ifNot', function(v1, v2, options) {
+    if(v1 !== v2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 }
 
-module.exports = registerHelpers;
+module.exports = registerHelpersAndPartials;

@@ -2,7 +2,7 @@ const moment = require('moment');
 const handlebars = require('handlebars');
 const fs = require('fs-extra');
 const marked = require('marked');
-const handlebarHelpers = require('./handlebarHelpers');
+const registerHelpersAndPartials = require('./handlebarHelpers');
 
 class Writer {
   constructor(config, tpl) {
@@ -18,7 +18,7 @@ class Writer {
     this.tpl = tpl;
 
     // Register helpers.
-    handlebarHelpers(handlebars);
+    registerHelpersAndPartials(handlebars);
   }
 
   addContent(data) {
@@ -31,7 +31,7 @@ class Writer {
       now: moment().unix(),
       ...this.config,
     };
-
+    
     return {
       site: data,
     };
