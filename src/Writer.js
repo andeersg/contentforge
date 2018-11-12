@@ -84,6 +84,10 @@ class Writer {
     const pageVariables = Object.assign({}, variables);
     pageVariables.page = item;
 
+    if (item.front) {
+      pageVariables.is_front = true;
+    }
+
     // This is a function where we send in variables to render it.
     let renderedContent;
     try {

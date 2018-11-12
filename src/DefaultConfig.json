@@ -9,5 +9,6 @@
       "permalink": ":year/:month/:filename"
     }
   ],
-  "permalink": ":path/:filename"
+  "permalink": ":path/:filename",
+  "ignore": []
 }

@@ -18,14 +18,13 @@ class App extends EventEmitter {
     this.write = this.write.bind(this);
   }
 
-  async init(options) {
+  async init(config) {
     // Call stuff, and build it.
-    this.config = await Config(this.projectRoot);
-    this.config.environment = options.environment;
+    this.config = config;
 
-    this.isDebug = options.debug;
-    this.isDryRun = options.dryRun;
-    this.silent = options.silent;
+    this.isDebug = config.cli.debug;
+    this.isDryRun = config.cli.dryRun;
+    this.silent = config.cli.silent;
 
     this.templates = new Templates();
     this.contentLoader = new ContentLoader(this.config);
@@ -48,6 +47,17 @@ class App extends EventEmitter {
     catch(error) {
       console.log(error);
     };
+  }
+
+  getIgnoreGlobs(ignore = []) {
+    return [
+      '_*/**',
+      'config.json',
+      'package-lock.json',
+      'package.json',
+      'node_modules',
+      ...ignore,
+    ];
   }
 
 }

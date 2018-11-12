@@ -36,6 +36,7 @@ class ContentLoader {
       'package-lock.json',
       'package.json',
       'node_modules',
+      ...config.ignore,
     ];
 
     this.content = {};
@@ -58,6 +59,10 @@ class ContentLoader {
         filePath: file,
         extension: pathInfo.ext,
       };
+
+      if (file === 'index.html') {
+        this.content[pathInfo.name].front = true;
+      }
 
       // Read file and check for fm.
       if (file.match(copyRegex)) {
@@ -83,8 +88,8 @@ class ContentLoader {
         return;
       }
 
-      // If content is marked as not published ignore it.
-      if (fm.attributes.hasOwnProperty('publish') && !fm.attributes.publish) {
+      // If content is marked as draft ignore it.
+      if (fm.attributes.hasOwnProperty('draft') && fm.attributes.draft && this.config.env !== 'development') {
         delete this.content[pathInfo.name];
         return;
       }
